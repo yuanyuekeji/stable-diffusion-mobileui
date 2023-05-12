@@ -1,0 +1,87 @@
+
+/* 设置浏览器滚动条的样式 */ 
+::-webkit-scrollbar { 
+	width: 0px; 
+} 
+ /* 滚动槽 */ 
+::-webkit-scrollbar-track { 
+	-webkit-box-shadow: inset 006px rgba(0, 0, 0, 0.3); 
+	border-radius: 10px; 
+} 
+ /* 滚动条滑块 */ 
+::-webkit-scrollbar-thumb { 
+	border-radius: 10px; 
+	background: rgba(0, 0, 0, 0.1); 
+	-webkit-box-shadow: inset 006px rgba(0, 0, 0, 0.5); 
+} 
+::-webkit-scrollbar-thumb:window-inactive { 
+	background: rgba(255, 0, 0, 0.4); 
+} 
+/* #ifndef APP-NVUE */
+::v-deep .uni-searchbar__box {
+	justify-content: flex-start !important;
+}
+::v-deep .uni-list-item__container {
+	background-color: #fff;
+}
+::v-deep .uni-list-item {
+	border-bottom: 1px solid #eee;
+}
+::v-deep .uni-list-item:nth-last-child(3) {
+	border-bottom: 0px solid #eee;
+}
+::v-deep .uni-input-placeholder {
+	color: #999 !important;
+}
+::v-deep .uni-searchbar__text-placeholder {
+	color: #999 !important;
+}
+::v-deep .uni-searchbar__box-icon-search {
+	padding: 0 0 0 8px !important;
+}
+::v-deep .uni-searchbar__box-search-input{
+	padding-left: 8px;
+}
+/* #endif */
+image {
+	width: 100%;
+	height: 100%;
+}
+page {
+	background-color: #000;
+	color: #fff;
+}
+.yuanyue-line {
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-wrap: break-word;
+	white-space: normal !important;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
+}
+.yuanyue-line2 {
+	-webkit-line-clamp: 2 !important;
+}
+
+.yuanyue-plr{
+	padding: 0 15px;
+}
+.yuanyue-pl10{
+	padding-left: 10px;
+}
+.yuanyue-pl20{
+	padding-left: 20px;
+}
+.yuanyue-safe {
+	width: 100%;
+	height: 10rpx;
+	height: calc(10rpx + constant(safe-area-inset-bottom));
+	height: calc(10rpx + env(safe-area-inset-bottom));
+}
+.yuanyue-safe20 {
+	width: 100%;
+	height: 2px;
+	height: calc(20px + constant(safe-area-inset-bottom));
+	height: calc(20px + env(safe-area-inset-bottom));
+}
