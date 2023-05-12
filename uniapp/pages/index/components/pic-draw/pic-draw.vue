@@ -153,6 +153,15 @@
 </template>
 
 <script>
+	// +—————————————————————————————————————————————————————————————————————
+	// | Created by 元岳科技
+	// +—————————————————————————————————————————————————————————————————————
+	// | Copyright (c) 2013~2023 http://www.yuanyuekj.com/ All rights reserved.
+	// +—————————————————————————————————————————————————————————————————————
+	// | GITEE: https://gitee.com/yuanyuekeji/stable-diffusion-mobileui
+	// +—————————————————————————————————————————————————————————————————————
+	// | GITHUB: https://github.com/yuanyuekeji/stable-diffusion-mobileui
+	// +—————————————————————————————————————————————————————————————————————
 	import {
 		mapGetters
 	} from 'vuex';
@@ -209,7 +218,7 @@
 					prompt: "", // 提示词
 					negative_prompt: "", //反向提示词
 					sd_model_hash: "", //模型的hash
-					cfg_scale: 1, //提示词相关性1-30
+					cfg_scale: 7, //提示词相关性1-30
 					steps: 20, //采样迭代步数 1-150
 					sampler_name: "", //采样方法
 					width: 512,

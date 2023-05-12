@@ -20,6 +20,15 @@
 </template>
 
 <script>
+	// +—————————————————————————————————————————————————————————————————————
+	// | Created by 元岳科技
+	// +—————————————————————————————————————————————————————————————————————
+	// | Copyright (c) 2013~2023 http://www.yuanyuekj.com/ All rights reserved.
+	// +—————————————————————————————————————————————————————————————————————
+	// | GITEE: https://gitee.com/yuanyuekeji/stable-diffusion-mobileui
+	// +—————————————————————————————————————————————————————————————————————
+	// | GITHUB: https://github.com/yuanyuekeji/stable-diffusion-mobileui
+	// +—————————————————————————————————————————————————————————————————————
 	import {
 		mapGetters
 	} from 'vuex';
@@ -62,7 +71,6 @@
 			}
 		},
 		onReady() {
-			console.log("rk===>[onready]");
 			this.isNodes++;
 			let that = this;
 			this.$utils.getRect('#tabs-rect').then(res => {
@@ -71,14 +79,17 @@
 			});
 		},
 		onLoad() {
-			console.log("rk===>[onload]");
 			setTimeout(() => {
 				this.showSkeleton = false;
 			}, 1500)
 		},
 		methods: {
 			clickItem(item) {
-				console.log("rk===>[item]" + JSON.stringify(item));
+				if(item.url){
+					uni.navigateTo({
+						url:'/pages/webview/webview?url='+item.url,
+					})
+				}
 			},
 			changeTab(idx, item) {
 				this.tabIdx = idx;

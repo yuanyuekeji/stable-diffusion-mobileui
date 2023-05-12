@@ -8,16 +8,16 @@
 			<view class="content-box">
 				<view class="item open-url-box">
 					开源地址
-					<view class="yuanyue-pl20 open-url" v-if="appConfig.github_url">{{appConfig.github_url}}</view>
-					<view class="yuanyue-pl20 open-url" v-if="appConfig.gitee_url">{{appConfig.gitee_url}}</view>
+					<view class="yuanyue-pl20 open-url yuanyue-line yuanyue-line10" v-if="appConfig.github_url">{{appConfig.github_url}}</view>
+					<view class="yuanyue-pl20 open-url yuanyue-line yuanyue-line10" v-if="appConfig.gitee_url">{{appConfig.gitee_url}}</view>
 				</view>
 				<view class="item contact-box">
 					联系我们
-					<view class="yuanyue-pl20 contact-wx" v-if="appConfig.wexin">微信：{{appConfig.wexin}}</view>
+					<view class="yuanyue-pl20 contact-wx" v-if="appConfig.qq">QQ：{{appConfig.qq}}</view>
 				</view>
 				<view class="item img-box">
 					<view class="contact-wx-img" :style="'width:'+qrSize+'px;height:'+qrSize+'px;'">
-						<image :src="appConfig.weixin_qr" mode="aspectFit"></image>
+						<image :src="appConfig.qq_qr" mode="aspectFit"></image>
 					</view>
 				</view>
 			</view>
@@ -26,6 +26,15 @@
 </template>
 
 <script>
+	// +—————————————————————————————————————————————————————————————————————
+	// | Created by 元岳科技
+	// +—————————————————————————————————————————————————————————————————————
+	// | Copyright (c) 2013~2023 http://www.yuanyuekj.com/ All rights reserved.
+	// +—————————————————————————————————————————————————————————————————————
+	// | GITEE: https://gitee.com/yuanyuekeji/stable-diffusion-mobileui
+	// +—————————————————————————————————————————————————————————————————————
+	// | GITHUB: https://github.com/yuanyuekeji/stable-diffusion-mobileui
+	// +—————————————————————————————————————————————————————————————————————
 	import {
 		mapGetters
 	} from 'vuex';
@@ -90,6 +99,9 @@
 		width: 100%;
 		.item {
 			margin-bottom: 20rpx;
+		}
+		.open-url {
+			padding: 10rpx 20rpx;
 		}
 		
 	}

@@ -5,6 +5,12 @@
 			"style": {
 				"navigationBarTitleText": "stable-diffusion-mobileui"
 			}
+		},
+		{
+			"path": "pages/webview/webview",
+			"style": {
+				"navigationBarTitleText": "stable-diffusion-mobileui"
+			}
 		}
 	],
 	"easycom": {
