@@ -1,16 +1,11 @@
 
-// 测试站
+// 站点域名
 let httpApi = 'http://sd.nps.gt520.com'
-
-// httpApi = 'https://sd.leafrainy.cc'
 httpApi = 'http://127.0.0.1:7860'
-
-//正式站
-// let httpApi = ''
 
 // H5域名==>[打包发布时将httpApi置空,运行时保留真实地址]
 // #ifdef H5
-// httpApi = '/api'
+// httpApi = ''
 // #endif
 
 module.exports = {

@@ -19,8 +19,9 @@ https://pan.baidu.com/s/1TK7UyX5lgNjdwdfcmYCI5Q  密码 c132
 2.1.3 回到左侧，点击左上角第一个【一键启动】，回到启动界面，点击右下角的【一键启动】
 
 ### 2.2 安装H5端
-2.2.1 下载本仓库
-2.2.2 Hbuilder打开并运行
+2.2.1 下载本仓库下的`uniapp`文件夹;  
+2.2.2 使用`Hbuilder`打开项目,在`uniapp/config/app.js`中的`httpApi`处填写您的域名  
+![uniapp](./static/uni_1.png)  
 2.2.3 直接访问打开的界面即可
 
 ## 3. 其他资料
