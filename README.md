@@ -20,9 +20,9 @@ https://pan.baidu.com/s/1TK7UyX5lgNjdwdfcmYCI5Q  密码 c132
 
 ### 2.2 安装H5端
 2.2.1 下载本仓库下的`uniapp`文件夹;  
-2.2.2 使用`Hbuilder`打开项目,在`uniapp/config/app.js`中的`httpApi`处填写您的域名  
+2.2.2 使用`Hbuilder`打开项目,在`uniapp/config/app.js`中的`httpApi`处填写您的域名;   
 ![uniapp](./static/uni_1.png)  
-2.2.3 直接访问打开的界面即可
+2.2.3 `Hbuilder`工具栏->运行->运行到浏览器->Chrome;  
 
 ## 3. 其他资料
 3.1新增LoRA模型
