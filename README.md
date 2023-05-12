@@ -77,8 +77,7 @@ zerotier官网：https://www.zerotier.com/
 
 4.3如果需要从外网访问到，需根据3.3的方式配置内网穿透并且重新设置H5或小程序的域名地址
 
-## 5. 联系我们
-- 官网：http://www.yuanyuekj.com/
+## 5. 联系我们  
 - QQ讨论群:341220974
 
 ![s1](./static/qr.png) 
