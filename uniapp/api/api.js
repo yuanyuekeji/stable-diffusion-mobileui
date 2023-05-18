@@ -13,12 +13,14 @@ import {
 	HTTP_CONFIG_URL,
 	HTTP_TRANSLATE_URL,
 } from '@/config/app';
+
+/// MJ
 /**
  * 公共配置
  */
 export function getConfig(data) {
-	return request.get( HTTP_CONFIG_URL + '/data.json', data, {
-		isCustomUrl: true
+	return request.get('/config', data, {
+		isMj: true
 	});
 }
 
@@ -26,11 +28,29 @@ export function getConfig(data) {
  * 翻译
  */
 export function getTranslate(data) {
-	return request.get( HTTP_TRANSLATE_URL + '/translate', data, {
-		isCustomUrl: true
+	return request.get('/translate', data, {
+		isMj: true
+	});
+}
+/**
+ * MJ生成图片
+ */
+export function postMjAdd(data) {
+	return request.post('/mj_add', data, {
+		isMj: true
+	});
+}
+/**
+ * MJ任务查询
+ */
+export function getMjFetch(data) {
+	return request.get('/mj_fetch', data, {
+		isMj: true
 	});
 }
 
+
+/// SD
 /**
  * 全局信息
  */
@@ -74,3 +94,4 @@ export function postPreprocess(data){
 export function getAnalysRes(fileDir,name){
 	return request.get(`/file=${fileDir}/${name}.txt`);
 }
+

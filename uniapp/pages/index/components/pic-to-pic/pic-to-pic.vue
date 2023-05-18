@@ -2,7 +2,7 @@
 	<view class="com-pic-to-pic">
 		<view class="ptp-content">
 			<view class="header">
-				<image src="./static/header.png" mode=""></image>
+				<image src="@/static/images/header.png" mode=""></image>
 				<view class="title">敬请期待</view>
 			</view>
 			<view class="content-box">

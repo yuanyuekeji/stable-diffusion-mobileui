@@ -8,27 +8,16 @@
 // | GITHUB: https://github.com/yuanyuekeji/stable-diffusion-mobileui
 // +—————————————————————————————————————————————————————————————————————
 
-// 站点域名
-let httpApi = 'http://127.0.0.1:7860'
+// SD站点域名
+let http_api_sd = 'http://127.0.0.1:7860'
+// MJ站点域名
+let http_api_mj = '参考README文档：2.3 配置midjourney'
 
-// H5域名==>[打包发布时将httpApi置空,运行时保留真实地址]
-// #ifdef H5
-// httpApi = ''
-// #endif
 
 module.exports = {
 	// 请求域名 格式： https://您的域名
-	// #ifdef MP || APP-PLUS
-	HTTP_REQUEST_URL: httpApi,
-	// #endif
-	// #ifdef H5
-	//H5接口是浏览器地址
-	HTTP_REQUEST_URL: httpApi || window.location.protocol + "//" + window.location.host,
-	// #endif
-	// 公共配置地址
-	HTTP_CONFIG_URL:"https://sduiapi.leafrainy.cc",
-	// 翻译地址
-	HTTP_TRANSLATE_URL:"https://fanyi.leafrainy.cc",
+	HTTP_URL_SD: http_api_sd,
+	HTTP_URL_MJ: http_api_mj,
 	HEADER: {
 		'content-type': 'application/json',
 		//#ifdef H5

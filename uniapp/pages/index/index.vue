@@ -83,6 +83,30 @@
 				this.showSkeleton = false;
 			}, 1500)
 		},
+		/**
+		 * 用户点击右上角分享
+		 */
+		// #ifdef MP
+		onShareAppMessage: function() {
+			let that = this;
+			wx.showShareMenu({
+				withShareTicket: true,
+				menus: ['shareAppMessage', 'shareTimeline']
+			});
+			return {
+				title: '',
+				path: '/pages/index/index'
+			};
+		},
+		onShareTimeline: function() {
+			let that = this;
+			return {
+				title: '',
+				query: {},
+				imageUrl: ''
+			};
+		},
+		// #endif
 		methods: {
 			clickItem(item) {
 				if(item.url){

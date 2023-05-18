@@ -10,7 +10,9 @@
 
 import {
 	TOKENNAME,
-	HTTP_REQUEST_URL
+	// HTTP_REQUEST_URL,
+	HTTP_URL_SD,
+	HTTP_URL_MJ
 } from '@/config/app.js';
 import store from "@/store/index.js"
 // import {
@@ -535,6 +537,7 @@ function uploadImageOne(opt, successCallback, errorCallback) {
 		sourceType = opt.sourceType || ['album', 'camera'],
 		is_load = opt.is_load || true,
 		uploadUrl = opt.url || '',
+		uploadType = opt.type || 'sd',
 		inputName = opt.name || 'file';
 	uni.chooseImage({
 		count: count, //最多可以选择的图片总数  
@@ -551,34 +554,48 @@ function uploadImageOne(opt, successCallback, errorCallback) {
 			// console.log("rk===>[图片信息2]", store.state.app.token);
 			let imgPath = res.tempFilePaths[0];
 
-			uploadImgWithPath(uploadUrl, imgPath, successCallback, errorCallback);
+			uploadImgWithPath(uploadType,uploadUrl, imgPath, successCallback, errorCallback);
 
 		}
 	})
 }
 
-function uploadImgWithPath(uploadUrl, imgPath, successCallback, errorCallback) {
+function uploadImgWithPath(uploadType='sd',uploadUrl, imgPath, successCallback, errorCallback) {
 
 	let that = this;
-	let server_url = HTTP_REQUEST_URL + '/' + uploadUrl;
+	let contentType = "multipart/form-data"
+	// 默认sd上传
+	let server_url = HTTP_URL_SD + '/' + uploadUrl;
+	let header_dic = {
+		"accept":"application/json",
+		"contentype": contentType
+	};
+	// MJ上传
+	if(uploadType!='sd'){
+		server_url = HTTP_URL_MJ + '/' + uploadUrl;
+		let hostArray = HTTP_URL_MJ.split('//');
+		header_dic = {
+			// "host":hostArray[1],
+			"accept":"application/json",
+			"contentype": contentType,
+		};
+	}
 	let inputName = 'files';
 	// let random = Math.random().toString().substr(2);
 	// let contentType = "multipart/form-data;boundary="+random
-	let contentType = "multipart/form-data"
-
+	
 	// console.log("rk===>[iamge-path]" ,  imgPath);
 	// console.log("rk===>[url]" , server_url);
 	// console.log("rk===>[contentType]" , contentType);
+	
+	// console.log("rk===>[header]" , header_dic);
 	
 	uni.uploadFile({
 		url: server_url,
 		filePath: imgPath,
 		name: inputName,
 		formData: {},
-		header: {
-			"accept":"application/json",
-			"contentype": contentType
-		},
+		header: header_dic,
 		// fileType: 'image',
 		success: function(res) {
 			// console.log('图片上传成功', res)
@@ -587,17 +604,37 @@ function uploadImgWithPath(uploadUrl, imgPath, successCallback, errorCallback) {
 				let data = res.data ? JSON.parse(res.data) : {};
 				// console.log("rk===>[传完了data]", res);
 				// console.log("rk===>[传完了data]", data);
-				if (data.length >0) {
-					let back_url = data[0];
-					back_url = back_url.replace(/\\/g,'/');
-					// back_url = HTTP_REQUEST_URL + '/file/'+back_url;
-					successCallback && successCallback(back_url)
-				} else {
-					showToast(data.msg);
-					errorCallback && errorCallback(data);
+				if(uploadType == 'mj'){
+					// mj上传
+					if (data && data.url) {
+						let back_url = data.url;
+						successCallback && successCallback(back_url)
+					} else {
+						showToast(data.msg);
+						errorCallback && errorCallback(data);
+					}
+				}else{
+					// sd上传
+					if (data.length >0) {
+						let back_url = data[0];
+						back_url = back_url.replace(/\\/g,'/');
+						successCallback && successCallback(back_url)
+					} else {
+						showToast(data.msg);
+						errorCallback && errorCallback(data);
+					}
 				}
 			} else {
-				showToast(res.data);
+				// console.log("rk===>[传完了Err:data]", res);
+				let data = res.data ? JSON.parse(res.data) : {};
+				// console.log("rk===>[传完了Err:data]", data);
+				if(uploadType == 'mj'){
+					showToast(data.message);
+				}else{
+					showToast(res.data);
+				}
+				
+				
 			}
 		},
 		fail: function(res) {

@@ -9,8 +9,8 @@
 // +—————————————————————————————————————————————————————————————————————
 
 import {
-	HTTP_REQUEST_URL,
-	HTTP_CONFIG_URL,
+	HTTP_URL_SD,
+	HTTP_URL_MJ,
 	HEADER,
 	TOKENNAME
 } from '@/config/app';
@@ -35,17 +35,16 @@ function baseRequest(url, method, data, {
 	noAuth = true,
 	noVerify = false,
 	noAlert = false,
-	isCustomUrl = false,
+	isMj = false,
 }) {
 	let Url = '',
 		header = HEADER;
 	
 	// 请求地址处理
-	if(isCustomUrl){
-		Url = url;
-		header = null;
+	if(isMj){
+		Url = HTTP_URL_MJ + url;
 	}else{
-		Url = HTTP_REQUEST_URL + url;
+		Url = HTTP_URL_SD + url;
 	}
 	if (!noAuth) {
 		//登录过期自动登录
@@ -74,6 +73,7 @@ function baseRequest(url, method, data, {
 		uni.request({
 			url: Url,
 			method: method || 'GET',
+			timeout: 600000,
 			header: header,
 			data: data || {},
 			success: (res) => {

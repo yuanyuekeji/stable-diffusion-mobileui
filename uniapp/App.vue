@@ -38,23 +38,23 @@
 	@import "static/css/base.scss";
 	@import "static/font/iconfont.css";
 
-	/deep/ uni-toast .uni-toast {
+	::v-deep .uni-toast {
 		background-color: #fff !important;
 	}
 
-	/deep/ uni-toast .uni-toast-text {
+	::v-deep .uni-toast-text {
 		color: #323232 !important;
 	}
 	
-	/deep/ uni-toast .uni-toast__content {
+	::v-deep .uni-toast__content {
 		color: #323232 !important;
 	}
 	
-	/deep/ uni-toast .uni-sample-toast {
+	::v-deep .uni-sample-toast {
 		background-color: #fff !important;
 		border-radius: 10rpx !important;
 	}
-	/deep/ uni-toast .uni-simple-toast__text{
+	::v-deep .uni-simple-toast__text{
 		background-color: #fff !important;
 		color: #323232 !important;
 	}

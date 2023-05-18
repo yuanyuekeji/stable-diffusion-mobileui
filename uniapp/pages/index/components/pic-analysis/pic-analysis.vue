@@ -64,7 +64,7 @@
 		getAnalysRes
 	} from "@/api/api.js"
 	import {
-		HTTP_REQUEST_URL
+		HTTP_URL_SD
 	} from "@/config/app.js"
 	export default {
 		name: 'pic-analysis',
@@ -84,71 +84,89 @@
 		},
 		data() {
 			return {
-				baseUrl: HTTP_REQUEST_URL + "/file/",
-				selShowUrl:'',
-				selDir:'',
-				imageName:'',
-				formData:{
-					id_task:'',
-					process_src:'',//源目录
-					process_dst:'',//目标目录
-					process_width:512,
-					process_height:512,
-					preprocess_txt_action:'ignore',//可选项有：无视（ignore）；复制（copy）;放前面（prepend）；放后面（append）
-					process_flip:false,//创建镜像副本
-					process_split:false,//分割过大副本
-					process_caption:false,//使用 BLIP 生成说明文字(自然语言描述
-					process_caption_deepbooru:true,
+				baseUrl: HTTP_URL_SD + "/file/",
+				selShowUrl: '',
+				selDir: '',
+				imageName: '',
+				formData: {
+					id_task: '',
+					process_src: '', //源目录
+					process_dst: '', //目标目录
+					process_width: 512,
+					process_height: 512,
+					preprocess_txt_action: 'ignore', //可选项有：无视（ignore）；复制（copy）;放前面（prepend）；放后面（append）
+					process_flip: false, //创建镜像副本
+					process_split: false, //分割过大副本
+					process_caption: false, //使用 BLIP 生成说明文字(自然语言描述
+					process_caption_deepbooru: true,
 				},
 				analysisRes: '',
 			}
 		},
-		watch:{
-			selDir(n,o){
-				if(n){
+		watch: {
+			selDir(n, o) {
+				if (n) {
 					this.selShowUrl = this.baseUrl + n;
 				}
 			}
 		},
 		mounted() {
-				this.formData.process_dst = this.data_dir +"/sd_analysis_pic_to_txt";
+			this.formData.process_dst = this.data_dir + "/sd_analysis_pic_to_txt";
 		},
 		methods: {
 			clickSelImg() {
-				
+
 				this.$utils.uploadImageOne('upload', res => {
 					this.selDir = res;
 					let temps = res.split(/[\/]+/);
-					let last_str = temps[temps.length-1];
+					let last_str = temps[temps.length - 1];
 					let name_temps = last_str.split('.')
 					this.imageName = name_temps[0];
 				})
 
 			},
 			clickSubmit() {
-				
-				if(!this.selDir){
+
+				if (!this.selDir) {
 					return this.$utils.showToast("请先选择图片");
 				}
-				
+
 				let task_id = this.$utils.fn_Guid(15);
 				this.formData.id_task = "task(" + task_id + ")";
 				let temps = this.selDir.split(/[\/]+/);
-				let last_str = "/" + temps[temps.length-1];
-				let img_dir = this.selDir.replace(last_str,'');
+				let last_str = "/" + temps[temps.length - 1];
+				let img_dir = this.selDir.replace(last_str, '');
 				this.formData.process_src = img_dir;
-				
+
 				uni.showLoading({
-					title:"解析中..."
+					title: "解析中...",
+					mask: true
 				})
-				postPreprocess(this.formData).then(res=>{
+				postPreprocess(this.formData).then(res => {
 					uni.hideLoading()
 					this.getAnalysRes();
 				}).catch(err => {
 					uni.hideLoading()
 				});
-				
+
 			},
+			getAnalysRes() {
+				let dir = this.formData.process_dst;
+				let name = "00001-0-" + this.imageName;
+				getAnalysRes(dir, name).then(res => {
+					this.$utils.showToast("解析成功");
+					this.analysisRes = res;
+				}).catch(err => {
+					let name2 = "00000-0-" + this.imageName;
+					getAnalysRes(dir, name2).then(res => {
+						this.$utils.showToast("解析成功");
+						this.analysisRes = res;
+					}).catch(err => {
+						this.$utils.showToast("解析失败");
+					});
+				});
+			},
+			/*
 			getAnalysRes(){
 				let dir = this.formData.process_dst;
 				let name = "00000-0-" + this.imageName;
@@ -157,14 +175,15 @@
 					this.analysisRes = res;
 				}).catch(err => {});
 			},
-			
+			*/
+
 			clickClipboard(flag) {
 				let that = this;
 				uni.setClipboardData({
 					data: this.analysisRes,
 					showToast: false,
 					success: function() {
-						
+
 						that.$utils.showToast('复制成功')
 					}
 				});

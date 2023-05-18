@@ -4,7 +4,7 @@
 为了方便本地搭建的stable diffusion 可以随时随地的使用。基于一键包搭建的stable-diffusion，推出适配移动端的界面UI，可以生成H5和微信小程序。
 
 ### 1.1效果展示
-![s1](./static/s1.png)  ![s2](./static/s2.png)  ![s3](./static/s3.png)  
+![s1](./static/s1.png)  ![s2](./static/s2.png)  ![s3](./static/s3.png)  ![s4](./static/s4.png)  
 
 ### 1.2主要功能：
 
@@ -12,11 +12,11 @@
 
 2.咒语解析：上传一张图片，解析为多个英文提示词
 
+3.midjourney以图生图
+
 ### 1.3即将发布：
 
-1.图生图
-
-2.MJ图生图，文生图
+1.SD图生图
 
 ### 不断更新优化，欢迎Star。如需定制，欢迎联系
 
@@ -42,6 +42,10 @@ https://pan.baidu.com/s/1TK7UyX5lgNjdwdfcmYCI5Q  密码 c132
 ![uniapp](./static/uni_1.png)  
 
 2.2.3 `Hbuilder`工具栏->运行->运行到浏览器->Chrome;  
+
+
+### 2.3 配置midjourney【可选】
+如果有midjourney账号，需要调用MJ绘画功能的话，请加QQ群（群号：341220974），获取midjourney的配置文档
 
 ## 3. 其他资料
 3.1新增LoRA模型
@@ -77,7 +81,11 @@ zerotier官网：https://www.zerotier.com/
 
 4.3如果需要从外网访问到，需根据3.3的方式配置内网穿透并且重新设置H5或小程序的域名地址
 
-## 5. 联系我们  
+## 5. 更新日志
+20230518：更新：midjourney以图生图，新的UI界面，即时翻译
+
+20230512：初版发布
+## 6. 联系我们  
 - QQ讨论群:341220974
 
 ![s1](./static/qr.png) 

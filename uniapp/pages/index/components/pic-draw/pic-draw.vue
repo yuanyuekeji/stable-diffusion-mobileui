@@ -15,11 +15,11 @@
 					<view class="text-num">{{cueword_num}}/{{maxinput}}</view>
 				</view>
 			</view>
-			<!-- <view class="translate-box">
+			<view class="translate-box">
 				<view class="translate" @click="clickTranslate(1)">
 					<text class="iconfont icon-qiehuan"></text>翻译英文
 				</view>
-			</view> -->
+			</view>
 			<!-- 反向提示词 -->
 			<view class="input-item">
 				<view class="section">
@@ -27,18 +27,18 @@
 					<view class="title-en">(Negative prompt)</view>
 				</view>
 				<view class="text-area">
-					<textarea v-model="formData.negative_prompt" placeholder="输入你不想要的内容,支持中英文,用逗号分割."
+					<textarea v-model="reverse" placeholder="输入你不想要的内容,支持中英文,用逗号分割."
 						:maxlength="maxinput"></textarea>
 				</view>
 				<view class="text-num-box">
 					<view class="text-num">{{reverse_num}}/{{maxinput}}</view>
 				</view>
 			</view>
-			<!-- <view class="translate-box">
+			<view class="translate-box">
 				<view class="translate" @click="clickTranslate(2)">
 					<text class="iconfont icon-qiehuan"></text>翻译英文
 				</view>
-			</view> -->
+			</view>
 
 			<!-- 模型选择 -->
 			<view class="box-content model-box">
@@ -60,7 +60,6 @@
 							@click="clickLora(item,index)">
 							<view class="img-box">
 								<image :src="item.path" mode="aspectFill"></image>
-								<!-- <image src="@/static/car1.jpeg" mode="aspectFill"></image> -->
 							</view>
 							<view class="template-item-txt yuanyue-line">{{item.name}}</view>
 						</view>
@@ -130,13 +129,14 @@
 
 			<!-- 生成结果 -->
 			<view class="box-content result-box" v-if="generatesImages && generatesImages.length>0">
+				<view class="item-section">生成结果(点击图片长按保存)</view>
 				<view class="result-content">
 					<view class="res-img-box" v-for="(item,index) in generatesImages" :key="index"
 						@click="clickImg(generatesImages,index)">
 						<image :src="item" mode="aspectFit"></image>
-						<view class="download" @click.stop="clickDown(item,index)">
+						<!-- <view class="download" @click.stop="clickDown(item,index)">
 							<text class="iconfont icon-xiazai"></text>
-						</view>
+						</view> -->
 					</view>
 				</view>
 			</view>
@@ -173,7 +173,7 @@
 		postTxt2img
 	} from "@/api/api.js"
 	import {
-		HTTP_REQUEST_URL
+		HTTP_URL_SD
 	} from "@/config/app.js"
 	export default {
 		name: 'pic-draw',
@@ -192,6 +192,7 @@
 				samplerVal: 0,
 				selLora:null,
 				cueword:'',
+				reverse:'',
 				formData: {
 					styles: [], //模板风格-字符串数组
 					firstphase_width: 0,
@@ -345,7 +346,7 @@
 			cueword(n, o) {
 				this.cueword_num = n.length;
 			},
-			"formData.negative_prompt"(n, o) {
+			reverse(n, o) {
 				this.reverse_num = n.length;
 			},
 			"formData.steps":{
@@ -391,17 +392,40 @@
 			/**
 			 * 翻译
 			 */
-			clickTranslate(falg) {
-				// rk_warning
+			clickTranslate(flag) {
+				if(flag == 1 && !this.cueword){
+					return this.$utils.showToast('内容不能为空');
+				}
+				if(flag == 2 && !this.reverse){
+					return this.$utils.showToast('内容不能为空');
+				}
 				let postDic = {
 					doctype: 'json',
 					type: 'ZH_CN2EN',
-					i: '你好'
+					i: flag==1?this.cueword:this.reverse
 				}
+				uni.showLoading({
+					title:'请稍后',
+					mask:true
+				})
 				getTranslate(postDic).then(res => {
-					
+					uni.hideLoading()
+					if(res.errorCode == 0){
+						// "translateResult":[[{"src":"你好","tgt":"hello"}]]
+						let result = res.translateResult[0];
+						let result2 = result[0];
+						let tgt = result2.tgt;
+						if(flag == 1){
+							this.cueword = tgt;
+						}else{
+							this.reverse = tgt;
+						}
+					}else{
+						this.$utils.showToast('翻译失败,请重试');
+					}
 				}).catch(err => {
-					
+					uni.hideLoading()
+					this.$utils.showToast('翻译失败,请重试');
 				});
 			},
 			/**
@@ -445,7 +469,7 @@
 						let new_item = {
 							name: item,
 							// path: this.lora_dir + "\\" + item + '.png',
-							path: HTTP_REQUEST_URL + "/file=models/Lora/" + item + '.png',
+							path: HTTP_URL_SD + "/file=models/Lora/" + item + '.png',
 							selected: index == 0 ? true : false,
 						};
 						if (index == 0) {
@@ -551,9 +575,9 @@
 			clickSubmit() {
 				
 				this.formData.prompt = this.cueword + ",<lora:"+this.selLora.name+":1>"
+				this.formData.negative_prompt = this.reverse + ",nsfw,jinpingxi,xijinping";
 				
-				
-				if (!this.cueword && !this.formData.negative_prompt) {
+				if (!this.cueword && !this.reverse) {
 					return this.$utils.showToast("请输入提示词或反向提示词")
 				}
 
@@ -562,7 +586,8 @@
 				}
 				this.isBusying = true;
 				uni.showLoading({
-					title: '正在生成...'
+					title: '正在生成...',
+					mask:true
 				});
 				postTxt2img(this.formData).then(res => {
 					uni.hideLoading()
@@ -604,7 +629,8 @@
 				}
 				this.isBusying = true;
 				uni.showLoading({
-					title: '图片解析中...'
+					title: '图片解析中...',
+					mask:true
 				})
 				let img_path = await this.$utils.base64ToPath(item);
 				
@@ -968,35 +994,35 @@
 
 	}
 
-	/deep/ uni-slider {
+	::v-deep uni-slider {
 		margin: 10px 2px !important;
 	}
 
-	/deep/ uni-slider .uni-slider-value {
+	::v-deep uni-slider .uni-slider-value {
 		width: auto !important;
 		margin-left: 20rpx !important;
 		// text-align: right;
 		min-width: 20px;
 	}
 
-	/deep/ .uni-select .uni-select__selector {
+	/deep/ .uni-select__selector {
 		background-color: #323232 !important;
 		border: 1px solid #969696 !important;
 	}
 
-	/deep/ .uni-select .uni-popper__arrow {
+	::v-deep .uni-select .uni-popper__arrow {
 		border-bottom-color: #969696 !important;
 	}
 
-	/deep/ .uni-select .uni-popper__arrow::after {
+	::v-deep .uni-select .uni-popper__arrow::after {
 		border-bottom-color: #969696 !important;
 	}
 
-	/deep/ .uni-select .uni-select__input-text {
+	::v-deep .uni-select .uni-select__input-text {
 		color: #fff;
 	}
 
-	/deep/ .uni-select .uni-select__input-placeholder {
+	::v-deep .uni-select .uni-select__input-placeholder {
 		color: #6a6a6a !important;
 	}
 </style>
