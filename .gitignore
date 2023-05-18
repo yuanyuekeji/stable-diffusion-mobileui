@@ -21,5 +21,7 @@ yarn-error.log*
 *.sw?
 build.sh
 .idea
+*.zip
 unpackage
 uniapp/unpackage
+uniapp/*.zip
