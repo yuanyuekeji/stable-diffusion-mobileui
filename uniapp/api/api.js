@@ -45,10 +45,18 @@ export function postMjAdd(data) {
  */
 export function getMjFetch(data) {
 	return request.get('/mj_fetch', data, {
+		isMj: true,
+		noAlert:true,
+	});
+}
+/**
+ * MJ图片处理
+ */
+export function postMjChange(data) {
+	return request.post('/mj_change', data, {
 		isMj: true
 	});
 }
-
 
 /// SD
 /**

@@ -14,6 +14,10 @@ let http_api_sd = 'http://127.0.0.1:7860'
 let http_api_mj = '参考README文档：2.3 配置midjourney'
 
 
+http_api_sd = 'https://sd.nps.gt520.com'
+http_api_mj = 'https://sduiapi.gt520.com'
+
+
 module.exports = {
 	// 请求域名 格式： https://您的域名
 	HTTP_URL_SD: http_api_sd,
