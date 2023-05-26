@@ -6,15 +6,10 @@
 
 ### 1.1效果展示
 
-<img src="./static/s1.jpg" width="200">
-<img src="./static/s2.jpg" width="200">
-<img src="./static/s3.jpg" width="200">
-<img src="./static/s4.jpg" width="200">
-<img src="./static/s5.jpg" width="200">
-<img src="./static/s6.jpg" width="200">
-<img src="./static/s7.jpg" width="200">
-<img src="./static/s8.jpg" width="200">
-<img src="./static/s9.png" width="200">
+![s1](./static/s2.jpg)  
+![s2](./static/s3.jpg)  
+![s3](./static/s5.jpg)  
+![s4](./static/s6.jpg)  
 
 ### 1.2主要功能：
 
