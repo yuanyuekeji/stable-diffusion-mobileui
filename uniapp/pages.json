@@ -31,7 +31,7 @@
 				"pagePath": "pages/draw/draw",
 				"iconPath": "static/images/tab_draw.png",
 				"selectedIconPath": "static/images/tab_draw_sel.png",
-				"text": "MJ绘画"
+				"text": "MJ创作"
 			},
 			{
 				"pagePath": "pages/about/about",

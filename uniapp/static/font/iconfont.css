@@ -1,35 +1,53 @@
-/* CDN 服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+/* 在线链接服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
 @font-face {
-  font-family: 'iconfont';  /* Project id 4055842 */
-  src: url('https://at.alicdn.com/t/c/font_4055842_ftatqctbptd.woff2?t=1683701527252') format('woff2'),
-       url('https://at.alicdn.com/t/c/font_4055842_ftatqctbptd.woff?t=1683701527252') format('woff'),
-       url('https://at.alicdn.com/t/c/font_4055842_ftatqctbptd.ttf?t=1683701527252') format('truetype');
+	font-family: 'iconfont';
+	/* Project id 4055842 */
+	src: url('https://at.alicdn.com/t/c/font_4055842_tt2nxy1i60f.woff2?t=1684980804490') format('woff2'),
+		url('https://at.alicdn.com/t/c/font_4055842_tt2nxy1i60f.woff?t=1684980804490') format('woff'),
+		url('https://at.alicdn.com/t/c/font_4055842_tt2nxy1i60f.ttf?t=1684980804490') format('truetype');
 }
+
 /* https: */
 .iconfont {
-  font-family: "iconfont" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-family: "iconfont" !important;
+	font-size: 16px;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
+
+.icon-guanbi:before {
+	content: "\e611";
+}
+
+.icon-xiangqing:before {
+	content: "\e634";
+}
+
+.icon-jiahao:before {
+	content: "\e669";
+}
+
+.icon-no-full:before {
+	content: "\ea79";
+}
+
 .icon-xiazai:before {
-  content: "\e613";
+	content: "\e613";
 }
 
 .icon-morentupianccccccpx:before {
-  content: "\e612";
+	content: "\e612";
 }
 
 .icon-icon-:before {
-  content: "\e62d";
+	content: "\e62d";
 }
 
 .icon-qiehuan:before {
-  content: "\e628";
+	content: "\e628";
 }
 
 .icon-copy:before {
-  content: "\e64d";
+	content: "\e64d";
 }
-

@@ -547,6 +547,7 @@ function uploadImageOne(opt, successCallback, errorCallback) {
 			//启动上传等待中...  
 			uni.showLoading({
 				title: '图片上传中',
+				mask:true,
 			});
 
 			// console.log("rk===>[图片信息1]" + JSON.stringify(res));

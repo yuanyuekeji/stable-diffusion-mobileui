@@ -29,7 +29,8 @@ export function getConfig(data) {
  */
 export function getTranslate(data) {
 	return request.get('/translate', data, {
-		isMj: true
+		isMj: true,
+		noAlert:true,
 	});
 }
 /**
@@ -37,6 +38,22 @@ export function getTranslate(data) {
  */
 export function postMjAdd(data) {
 	return request.post('/mj_add', data, {
+		isMj: true
+	});
+}
+/**
+ * MJ生成图片【通用】
+ */
+export function postMjAddAll(data) {
+	return request.post('/mj_add_all', data, {
+		isMj: true
+	});
+}
+/**
+ * MJ图片解析
+ */
+export function postMjDescribe(data) {
+	return request.post('/mj_describe', data, {
 		isMj: true
 	});
 }
@@ -57,6 +74,7 @@ export function postMjChange(data) {
 		isMj: true
 	});
 }
+
 
 /// SD
 /**

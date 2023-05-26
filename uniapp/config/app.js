@@ -14,7 +14,6 @@ let http_api_sd = 'http://127.0.0.1:7860'
 let http_api_mj = '参考README文档：2.3 配置midjourney'
 
 module.exports = {
-	// 请求域名 格式： https://您的域名
 	HTTP_URL_SD: http_api_sd,
 	HTTP_URL_MJ: http_api_mj,
 	HEADER: {
@@ -31,4 +30,8 @@ module.exports = {
 	},
 	// 回话密钥名称 请勿修改此配置
 	TOKENNAME: 'token',
+	// MJ任务进度间隔
+	TIMER_FETCH_INTERVAL: 10000,
+	// 任务重试次数
+	FETCH_REPEAT_COUNT: 30,
 };

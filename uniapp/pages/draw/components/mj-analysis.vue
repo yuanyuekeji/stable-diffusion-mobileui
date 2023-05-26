@@ -2,16 +2,16 @@
 	<view class="com-pic-analysis">
 		<scroll-view scroll-y="true" :style="'height:'+scrollHeight+'px'">
 			<view class="title-box">
-				<view class="title">AI能够解析图片中的元素，并生成咒语描述词</view>
+				<view class="title">基于MJ解析图片中的元素，并生成咒语描述词</view>
 			</view>
 			<view class="upload-box">
 				<view class="upload-content" :style="'width:'+imgSize+'px;height:'+imgSize+'px;'">
-					<view class="img-box" v-if="!selShowUrl" @click="clickSelImg">
+					<view class="img-box" v-if="!formData.base64" @click="clickSelImg">
 						<text class="iconfont icon-morentupianccccccpx"></text>
 						<view class="des">点击上传图片</view>
 					</view>
-					<view class="img-box" v-if="selShowUrl" @click="clickSelImg">
-						<image :src="selShowUrl" mode="aspectFit"></image>
+					<view class="img-box" v-if="formData.base64" @click="clickSelImg">
+						<image :src="formData.base64" mode="aspectFit"></image>
 					</view>
 				</view>
 			</view>
@@ -20,17 +20,13 @@
 				<view class="submit-btn" @click="clickSubmit">立即解析</view>
 			</view>
 
+			<!--  -->
+			<view class="desc-box">
+				<view class="desc">生成时间1-3分钟,请耐心等待</view>
+			</view>
+
 			<view class="res-box">
 				<view class="res-title">解析结果</view>
-				<!-- <view class="res-item">
-					<view class="section-box">
-						<view class="res-item-title">中文</view>
-						<view class="res-item-copy" @click="clickClipboard(1)">
-							<text class="iconfont icon-copy"></text>复制
-						</view>
-					</view>
-					<view class="res-item-content">结果11111</view>
-				</view> -->
 				<view class="res-item">
 					<view class="section-box">
 						<view class="res-item-title">英文</view>
@@ -38,7 +34,7 @@
 							<text class="iconfont icon-copy"></text>复制
 						</view>
 					</view>
-					<view class="res-item-content">{{analysisRes}}</view>
+					<text class="res-item-content">{{analysisRes}}</text>
 				</view>
 			</view>
 			<view class="yuanyue-safe"></view>
@@ -57,15 +53,21 @@
 	// | GITHUB: https://github.com/yuanyuekeji/stable-diffusion-mobileui
 	// +—————————————————————————————————————————————————————————————————————
 	import {
+		TIMER_FETCH_INTERVAL,
+		FETCH_REPEAT_COUNT
+	} from "@/config/app.js"
+	import {
 		mapGetters
 	} from 'vuex';
 	import {
-		postPreprocess,
-		getAnalysRes
+		postMjDescribe,
+		getMjFetch
 	} from "@/api/api.js"
+
 	import {
 		HTTP_URL_SD
 	} from "@/config/app.js"
+
 	export default {
 		name: 'pic-analysis',
 		props: {
@@ -75,7 +77,6 @@
 			}
 		},
 		computed: {
-			...mapGetters(['data_dir']),
 			imgSize() {
 				let s_w = uni.getSystemInfoSync().screenWidth;
 				let img_w = s_w * 0.7;
@@ -84,106 +85,163 @@
 		},
 		data() {
 			return {
-				baseUrl: HTTP_URL_SD + "/file/",
-				selShowUrl: '',
-				selDir: '',
-				imageName: '',
+				isGenerating: false,
 				formData: {
-					id_task: '',
-					process_src: '', //源目录
-					process_dst: '', //目标目录
-					process_width: 512,
-					process_height: 512,
-					preprocess_txt_action: 'ignore', //可选项有：无视（ignore）；复制（copy）;放前面（prepend）；放后面（append）
-					process_flip: false, //创建镜像副本
-					process_split: false, //分割过大副本
-					process_caption: false, //使用 BLIP 生成说明文字(自然语言描述
-					process_caption_deepbooru: true,
+					base64: '',
 				},
+				generateTimer: null,
+				timerClear: false,
+				gener_task_id: '',
+				fetchErrCount: 0,
+				fetchRepeat: false,
 				analysisRes: '',
 			}
 		},
-		watch: {
-			selDir(n, o) {
-				if (n) {
-					this.selShowUrl = this.baseUrl + n;
-				}
-			}
-		},
+		watch: {},
 		mounted() {
-			this.formData.process_dst = this.data_dir + "/sd_analysis_pic_to_txt";
+
 		},
 		methods: {
 			clickSelImg() {
-
-				this.$utils.uploadImageOne('upload', res => {
-					this.selDir = res;
-					let temps = res.split(/[\/]+/);
-					let last_str = temps[temps.length - 1];
-					let name_temps = last_str.split('.')
-					this.imageName = name_temps[0];
-				})
-
-			},
-			clickSubmit() {
-
-				if (!this.selDir) {
-					return this.$utils.showToast("请先选择图片");
+				if (this.isGenerating) {
+					return;
 				}
-
-				let task_id = this.$utils.fn_Guid(15);
-				this.formData.id_task = "task(" + task_id + ")";
-				let temps = this.selDir.split(/[\/]+/);
-				let last_str = "/" + temps[temps.length - 1];
-				let img_dir = this.selDir.replace(last_str, '');
-				this.formData.process_src = img_dir;
+				let that = this;
+				uni.chooseImage({
+					count: 1,
+					success(res) {
+						let imgPath = res.tempFilePaths[0];
+						that.pathToBase64(imgPath);
+					}
+				})
+			},
+			/**
+			 * 格式转换
+			 */
+			pathToBase64(path) {
+				this.isGenerating = true;
+				this.$utils.pathToBase64(path).then(res => {
+					this.isGenerating = false;
+					this.formData.base64 = res;
+				}).catch(err => {
+					this.isGenerating = false;
+					this.$utils.showToast('图片解析失败,请重新选择')
+				});
+			},
+			/**
+			 * 提交
+			 */
+			clickSubmit() {
+				if (!this.formData.base64) {
+					return this.$utils.showToast('请先选择图片')
+				}
+				this.analysisRes = '';
 
 				uni.showLoading({
-					title: "解析中...",
+					title: "请稍后...",
 					mask: true
 				})
-				postPreprocess(this.formData).then(res => {
-					uni.hideLoading()
-					this.getAnalysRes();
+				this.isGenerating = true;
+				postMjDescribe(this.formData).then(res => {
+					if (res.code == 1) {
+						this.gener_task_id = res.result;
+						this.timerClear = false;
+						this.createTimer(this.gener_task_id);
+					} else {
+						this.isGenerating = false;
+						uni.hideLoading()
+						this.$utils.showToast(res.description);
+					}
 				}).catch(err => {
+					this.isGenerating = false;
 					uni.hideLoading()
 				});
-
 			},
-			getAnalysRes() {
-				let dir = this.formData.process_dst;
-				let name = "00001-0-" + this.imageName;
-				getAnalysRes(dir, name).then(res => {
-					this.$utils.showToast("解析成功");
-					this.analysisRes = res;
+
+			/**
+			 * 创建计时器
+			 */
+			createTimer(taskId) {
+				let that = this;
+				that.generateTimer = setInterval(function() {
+					if (that.timerClear) {
+						clearInterval(that.generateTimer);
+						that.generateTimer = null;
+						return;
+					}
+					that.getMjFetch(taskId);
+				}, TIMER_FETCH_INTERVAL);
+			},
+			destroyTimer() {
+				if (this.generateTimer) {
+					clearInterval(this.generateTimer);
+					this.generateTimer = null;
+				}
+				this.timerClear = true;
+				this.isGenerating = false;
+			},
+			/**
+			 * 获取图片进度
+			 */
+			getMjFetch(taksId) {
+				let postDic = {
+					taskId: taksId,
+				}
+				uni.showLoading({
+					title: "请稍后...",
+					mask: true
+				})
+				let that = this;
+
+				getMjFetch(postDic).then(res => {
+					if (res.status == 'NOT_START' || res.status == 'IN_PROGRESS' || res.status == 'SUBMITTED') {
+						if (that.fetchRepeat) {
+							that.fetchRepeat = false;
+							that.destroyTimer();
+							that.createTimer(taksId);
+						}
+					} else if (res.status == 'SUCCESS') {
+						uni.hideLoading()
+						this.fetchErrCount = 0;
+						this.analysisRes = res.prompt;
+						this.$utils.showToast('解析成功');
+						// 销毁
+						this.destroyTimer();
+
+					} else {
+						uni.hideLoading()
+						this.$utils.showToast('解析失败');
+						// 销毁
+						this.destroyTimer();
+					}
 				}).catch(err => {
-					let name2 = "00000-0-" + this.imageName;
-					getAnalysRes(dir, name2).then(res => {
-						this.$utils.showToast("解析成功");
-						this.analysisRes = res;
-					}).catch(err => {
-						this.$utils.showToast("解析失败");
-					});
+					// 销毁
+					that.destroyTimer();
+					if (that.fetchErrCount >= FETCH_REPEAT_COUNT) {
+						uni.hideLoading()
+						this.fetchErrCount = 0;
+						that.$utils.showToast('获取失败');
+						// console.log("rk===>[重试-放弃]", that.fetchErrCount);
+					} else {
+						setTimeout(() => {
+							that.fetchErrCount += 1;
+							that.fetchRepeat = true;
+							// console.log("rk===>[重试]", that.fetchErrCount);
+							that.getMjFetch(taksId);
+						}, 2000);
+					}
 				});
 			},
-			/*
-			getAnalysRes(){
-				let dir = this.formData.process_dst;
-				let name = "00000-0-" + this.imageName;
-				getAnalysRes(dir,name).then(res=>{
-					this.$utils.showToast("解析成功");
-					this.analysisRes = res;
-				}).catch(err => {});
-			},
-			*/
 
+			/**
+			 * 复制解析结果
+			 */
 			clickClipboard(flag) {
 				let that = this;
 				uni.setClipboardData({
 					data: this.analysisRes,
 					showToast: false,
 					success: function() {
-
 						that.$utils.showToast('复制成功')
 					}
 				});
@@ -251,6 +309,15 @@
 		}
 	}
 
+	.desc-box {
+		display: flex;
+		justify-content: center;
+
+		.desc {
+			font-size: 14px;
+		}
+	}
+
 	.res-box {
 		padding: 0 30rpx 50rpx;
 		font-size: 15px;
@@ -278,8 +345,6 @@
 					}
 				}
 			}
-
-
 			.res-item-content {}
 		}
 	}

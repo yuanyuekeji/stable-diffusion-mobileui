@@ -32,9 +32,9 @@
 	import {
 		mapGetters
 	} from 'vuex';
-	import picDraw from "./components/pic-draw/pic-draw.vue"
-	import picAnalysis from "./components/pic-analysis/pic-analysis.vue"
-	import PicToPic from "./components/pic-to-pic/pic-to-pic.vue"
+	import picDraw from "./components/pic-draw.vue"
+	import picAnalysis from "./components/pic-analysis.vue"
+	import PicToPic from "./components/pic-to-pic.vue"
 
 	export default {
 		components: {
