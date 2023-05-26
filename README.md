@@ -6,10 +6,7 @@
 
 ### 1.1效果展示
 
-![s1](./static/s2.jpg)  
-![s2](./static/s3.jpg)  
-![s3](./static/s5.jpg)  
-![s4](./static/s6.jpg)  
+![s1](./static/s2.jpg)![s2](./static/s3.jpg)![s3](./static/s5.jpg)![s4](./static/s6.jpg)  
 
 ### 1.2主要功能：
 
