@@ -15,6 +15,7 @@
 <img src="./static/s7.jpg" width="400">
 <img src="./static/s8.jpg" width="400">
 <img src="./static/s9.jpg" width="400">
+<img src="./static/qr.png" width="400">
 
 ### 1.2主要功能：
 
