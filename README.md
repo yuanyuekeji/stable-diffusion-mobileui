@@ -143,7 +143,7 @@ zerotier官网：https://www.zerotier.com/
 
 20230512：初版发布
 ## 6. 联系我们  
-- QQ讨论群:341220974
+- QQ讨论群:169978924
 
 ![s1](./static/qr.png) 
 
