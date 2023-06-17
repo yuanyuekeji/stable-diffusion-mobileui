@@ -60,7 +60,7 @@
 
 2.1.1一键端使用的是秋葉aaaki的整合包，直接下载根据说明安装即可
 
-秋叶大佬原百度网盘链接https://pan.baidu.com/s/1_ibEk2OpKHxmEg4AnFOpSA 提取码b145
+秋叶大佬原百度网盘链接https://pan.baidu.com/s/1MnyQH_gWgVdxU1S_Hjc5JQ 提取码t724
 
 注意：若链接失效，加群获取最新，群号见最下方
 
